@@ -8,7 +8,6 @@ int main(){
     int opt;
     opt = 0;
 
-
     game_rename(&p1, &p2);
     while(opt!=3){
         system("clear");

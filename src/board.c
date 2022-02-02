@@ -1,7 +1,8 @@
 #include"board.h"
 #include<stdio.h>
 
-void board_init(char x[3][3]){
+void board_init(char x[3][3])
+{
     /*
      * x -> the game board to init
      */
@@ -13,7 +14,8 @@ void board_init(char x[3][3]){
     }
 }
 
-void board_show(char x[3][3]){
+void board_show(char x[3][3])
+{
     /*
      * x -> the game board to show
      */
@@ -26,7 +28,8 @@ void board_show(char x[3][3]){
     }
 }
 
-void board_update(char x[3][3], int pos[2], char value){
+void board_update(char x[3][3], int pos[2], char value)
+{
     /*
      * x -> the game board to show
      * pos -> [row, column]
@@ -34,7 +37,8 @@ void board_update(char x[3][3], int pos[2], char value){
     x[pos[0]][pos[1]] = value;
 }
 
-int board_check(char x[3][3], char symbol){
+int board_check(char x[3][3], char symbol)
+{
     /*
      * inputs:
      *      x -> game board
@@ -51,7 +55,8 @@ int board_check(char x[3][3], char symbol){
     return 0;
 }
 
-int board_filled(char x[3][3], char symbol){
+int board_filled(char x[3][3], char symbol)
+{
     int i, j;
     for(i=0; i<3; i++){
         for(j=0; j<3; j++){
@@ -63,7 +68,8 @@ int board_filled(char x[3][3], char symbol){
 }
         
 
-int row_check(char x[3][3], char symbol, int row){
+int row_check(char x[3][3], char symbol, int row)
+{
     int col, count;
     count = 0;
     for(col=0; col<3; col++){
@@ -75,7 +81,8 @@ int row_check(char x[3][3], char symbol, int row){
     return 0;
 }
 
-int col_check(char x[3][3], char symbol, int col){
+int col_check(char x[3][3], char symbol, int col)
+{
     int row, count;
     count = 0;
     for(row=0; row<3; row++){
@@ -87,7 +94,8 @@ int col_check(char x[3][3], char symbol, int col){
     return 0;
 }
 
-int diags_check(char x[3][3], char symbol){
+int diags_check(char x[3][3], char symbol)
+{
     int i, count, count1;
     count = count1 = 0;
 
