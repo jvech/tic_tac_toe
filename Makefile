@@ -1,19 +1,22 @@
-objects = src/main.o src/board.o src/game.o
+OBJDIR = objs
+OBJS = $(addprefix $(OBJDIR)/,main.o board.o game.o)
+CFLAGS = -std=c99 -pedantic-errors
+DLIBS = -lncurses
 
-compile: $(objects)
-	gcc -o main $(objects)
+.PHONY: clean
 
-debug: $(objects)
-	gcc -g -o main $(objects)
+$(OBJDIR)/%.o: src/%.c
+	gcc -c $< -o $@ $(CFLAGS)
 
-main.o: src/main.c src/main.h
+all: build
 
-board.o: src/board.c src/board.h
+$(OBJS): | $(OBJDIR)
 
-game.o: src/game.c src/game.h
+$(OBJDIR):
+	mkdir $(OBJDIR)
 
-run: compile
-	./main
+build: $(OBJS)
+	gcc $^ -o main $(DLIBS)
 
 clean:
-	rm $(objects)
+	rm $(OBJS) -v

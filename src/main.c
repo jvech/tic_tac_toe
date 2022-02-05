@@ -1,18 +1,19 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include"board.h"
-#include"game.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include "board.h"
+#include "game.h"
 
-int main(){
+int main()
+{
     struct player p1, p2;
     int opt;
     opt = 0;
 
     game_rename(&p1, &p2);
-    while(opt!=3){
-        system("clear");
+    while (opt != 3) {
+        //system("clear");
         opt = game_menu();
-        switch(opt){
+        switch (opt) {
             case 1:
                 game_match(p1, p2);
                 break;
