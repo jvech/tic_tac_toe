@@ -6,22 +6,59 @@
 #include "game.h"
 
 
+static void draw_menu(char options[3][50], int cursor)
+{
+    int i;
+    for (i = 0; i < 3; i++) {
+        if (i == cursor) attron(A_REVERSE);
+        else attroff(A_REVERSE);
+
+        mvprintw(i + 2, 2, "%s", options[i]);
+        attroff(A_REVERSE);
+        refresh();
+    }
+}
+
 int game_menu()
 {
+    int i;
+    int opt = 0, input;
+    char menu_opts[3][50] = {{"1) new_game\n"},
+                             {"2) choose player names\n"},
+                             {"3) exit the game\n"}};
     initscr();
+
     clear();
+
+    curs_set(0);
+    noecho();
+    keypad(stdscr, TRUE);
+
+    attron(A_UNDERLINE);
     mvaddstr(0, 0,"Welcome to Tic Tac Toe Game");
-    int opt;
-    opt = 500;
+    attroff(A_UNDERLINE);
+    draw_menu(menu_opts, opt);
     do {
-        move(2, 0);
-        addstr("1) new game\n");
-        addstr("2) choose player names\n");
-        addstr("3) exit the game\n");
-        addstr("\topt: ");
-        opt = (int)getch() - '0';
-        refresh();
-    } while(opt < 1 || opt > 3);
+        input = getch();
+        switch (input) {
+            case KEY_UP:
+            case 'k':
+                opt--;
+                break;
+            case KEY_DOWN:
+            case 'j':
+                opt++;
+                break;
+            default: 
+                break;
+        }
+        if (opt < 0) opt = 2;
+        else if (opt > 2) opt = 0;
+        draw_menu(menu_opts, opt);
+    } while (input != '\n');
+
+    curs_set(1);
+    echo();
     endwin();
     return opt;
 }
@@ -48,8 +85,8 @@ void game_match(struct player p1, struct player p2)
     keypad(stdscr, TRUE);
     curs_set(0);
     noecho();
-    //start_color();
     clear();
+
     mvprintw(3, 15, "%s (%c)", p1.name, p1.symbol);
     mvprintw(5, 15, "%s (%c)", p2.name, p2.symbol);
     while (!board_filled(board, '-')) {
@@ -57,8 +94,8 @@ void game_match(struct player p1, struct player p2)
         deleteln();
         insertln();
         mvprintw(0, 2, "%s Turn", players[turn].name);
+        board_show(board, 2, 2, pos);
         do {
-            board_show(board, 2, 2, pos);
             input = getch();
             switch (input) {
                 case KEY_UP:
@@ -80,16 +117,20 @@ void game_match(struct player p1, struct player p2)
                 default:
                     break;
             }
+
             if (pos[0] == 3) pos[0] = 0;
             else if (pos[0] == -1) pos[0] = 2;
             if (pos[1] == 3) pos[1] = 0;
             else if (pos[1] == -1) pos[1] = 2;
+
+            board_show(board, 2, 2, pos);
         } while (input != ' ' || board[pos[0]][pos[1]] != '-');
 
         input = KEY_CLEAR;
         board_update(board, pos, players[turn].symbol);
         refresh();
         if (board_check(board, players[turn].symbol)) {
+            board_show(board, 2, 2, pos);
             mvprintw(8, 0, "Congratulations player %s, you have won\n", players[turn].name);
             getch();
             endwin();
@@ -97,6 +138,7 @@ void game_match(struct player p1, struct player p2)
         }
         turn = !turn;
     }
+    board_show(board, 2, 2, pos);
     mvprintw(8, 0, "No one won it's a tie\n");
     getch();
     curs_set(2);

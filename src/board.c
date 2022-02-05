@@ -28,6 +28,12 @@ void board_show(char board[3][3], int y, int x, int cursor[2])
             attroff(A_REVERSE);
         }
     }
+    mvaddstr(8, 0, "press");
+    attron(A_ITALIC);
+    addstr(" BACKSPACE ");
+    attroff(A_ITALIC);
+    addstr("to mark your decision");
+
     refresh();
 }
 
